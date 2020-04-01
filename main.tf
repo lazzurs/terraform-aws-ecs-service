@@ -32,6 +32,14 @@ data "aws_iam_policy_document" "ecs_exec_policy" {
     ]
     resources = ["*"]
   }
+  dynamic "statement" {
+    for_each = var.exec_iam_policies
+    content {
+      effect    = lookup(statement.value, "effect", null)
+      actions   = lookup(statement.value, "actions", null)
+      resources = lookup(statement.value, "resources", null)
+    }
+  }
 }
 
 data "aws_iam_policy_document" "ecs_exec_assume_role_policy" {

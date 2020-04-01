@@ -33,6 +33,17 @@ variable "task_iam_policies" {
   default = []
 }
 
+variable "exec_iam_policies" {
+  description = "Additional IAM policies for the execution role"
+  type = list(object({
+    effect    = string
+    actions   = list(string)
+    resources = list(string)
+  }))
+  default = []
+}
+
+
 variable "image_name" {
   description = "Name of the image to be deployed"
   type        = string
