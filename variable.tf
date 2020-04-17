@@ -194,8 +194,14 @@ variable "dns_search_domains" {
 variable "secrets" {
   description = "List of secrets to add"
   type = list(object({
-    name = string
+    name      = string
     valuefrom = string
   }))
   default = []
+}
+
+variable "task_iam_role" {
+  description = "ARN for a task IAM role"
+  type        = string
+  default     = ""
 }
