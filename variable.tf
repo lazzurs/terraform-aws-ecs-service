@@ -200,6 +200,16 @@ variable "secrets" {
   default = []
 }
 
+variable "ulimits" {
+  description = "A list of ulimits settings for container. This is a list of maps, where each map should contain \"name\", \"hardLimit\" and \"softLimit\""
+  type = list(object({
+    name      = string
+    hardLimit = number
+    softLimit = number
+  }))
+  default     = null
+}
+
 variable "task_iam_role" {
   description = "ARN for a task IAM role"
   type        = string
