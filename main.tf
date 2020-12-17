@@ -142,6 +142,7 @@ resource "aws_ecs_task_definition" "this" {
       portMappings     = var.port_mappings
       dnsSearchDomains = var.dns_search_domains
       secrets          = var.secrets
+      ulimits          = var.ulimits
     }
   ])
   dynamic "volume" {
