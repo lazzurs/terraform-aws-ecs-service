@@ -200,6 +200,15 @@ variable "secrets" {
   default = []
 }
 
+variable "systemControls" {
+  description = "A list of namespaced kernel parameters to set in the container. "
+  type = list(object({
+    namespace  = string
+    value = string
+  }))
+  default = []
+}
+
 variable "ulimits" {
   description = "A list of ulimits settings for container. This is a list of maps, where each map should contain \"name\", \"hardLimit\" and \"softLimit\""
   type = list(object({
