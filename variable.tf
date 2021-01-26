@@ -195,7 +195,7 @@ variable "secrets" {
   description = "List of secrets to add"
   type = list(object({
     name      = string
-    valuefrom = string
+    valueFrom = string
   }))
   default = []
 }
@@ -204,7 +204,7 @@ variable "systemControls" {
   description = "A list of namespaced kernel parameters to set in the container. "
   type = list(object({
     namespace  = string
-    value = string
+    value      = string
   }))
   default = []
 }
