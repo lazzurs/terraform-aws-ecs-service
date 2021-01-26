@@ -204,7 +204,7 @@ variable "systemControls" {
   description = "A list of namespaced kernel parameters to set in the container. "
   type = list(object({
     namespace  = string
-    value      = number
+    value      = string
   }))
   default = []
 }
