@@ -147,7 +147,7 @@ resource "aws_ecs_task_definition" "this" {
     }
   ])
   dynamic "volume" {
-    for_each = var.volumes
+    for_each = var.docker_volumes
     content {
       name      = volume.value.name
       host_path = lookup(volume.value, "host_path", null)
@@ -176,6 +176,27 @@ resource "aws_ecs_task_definition" "this" {
 
     }
   }
+
+  dynamic "volume" {
+    for_each = var.efs_volumes
+    content {
+      name      = volume.value.name
+
+      dynamic "efs_volume_configuration" {
+        for_each = lookup(volume.value, "efs_volume_configuration", [])
+        content {
+          file_system_id          = lookup(efs_volume_configuration.value, "file_system_id", null)
+          root_directory          = lookup(efs_volume_configuration.value, "root_directory", null)
+          transit_encryption      = lookup(efs_volume_configuration.value, "transit_encryption", null)
+          transit_encryption_port = lookup(efs_volume_configuration.value, "transit_encryption_port", null)
+          authorization_config    = lookup(efs_volume_configuration.value, "authorization_config", null)
+        }
+      }
+
+    }
+  }
+
+
   tags = merge(
     {
       "Name" = var.service_name

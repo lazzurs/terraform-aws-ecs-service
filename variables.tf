@@ -134,7 +134,7 @@ variable "network_mode" {
   default     = "bridge"
 }
 
-variable "volumes" {
+variable "docker_volumes" {
   description = "Task volume definitions as list of configuration objects"
   type = list(object({
     host_path = string
@@ -146,6 +146,14 @@ variable "volumes" {
       labels        = map(string)
       scope         = string
     }))
+  }))
+  default = []
+}
+
+variable "efs_volumes" {
+  description = "Task volume definitions as a list of configuration objects"
+  type = list(object({
+    name      = string
     efs_volume_configuration = list(object({
       file_system_id          = string
       root_directory          = string
