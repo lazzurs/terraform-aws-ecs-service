@@ -146,6 +146,13 @@ variable "volumes" {
       labels        = map(string)
       scope         = string
     }))
+    efs_volume_configuration = list(object({
+      file_system_id          = string
+      root_directory          = string
+      transit_encryption      = string
+      transit_encryption_port = number
+      authorization_config    = map(string)
+    }))
   }))
   default = []
 }
@@ -203,8 +210,8 @@ variable "secrets" {
 variable "systemControls" {
   description = "A list of namespaced kernel parameters to set in the container. "
   type = list(object({
-    namespace  = string
-    value      = string
+    namespace = string
+    value     = string
   }))
   default = []
 }
@@ -216,7 +223,7 @@ variable "ulimits" {
     hardLimit = number
     softLimit = number
   }))
-  default     = null
+  default = null
 }
 
 variable "task_iam_role" {
