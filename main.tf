@@ -168,7 +168,7 @@ resource "aws_ecs_task_definition" "this" {
   dynamic "volume" {
     for_each = var.efs_volumes
     content {
-      name      = volume.value.name
+      name = volume.value.name
 
       dynamic "efs_volume_configuration" {
         for_each = lookup(volume.value, "efs_volume_configuration", [])
@@ -181,7 +181,7 @@ resource "aws_ecs_task_definition" "this" {
             for_each = lookup(efs_volume_configuration.value, "authorization_config", [])
             content {
               access_point_id = lookup(authorization_config.value, "access_point_id", null)
-              iam = lookup(authorization_config, "iam", null)
+              iam             = lookup(authorization_config.value, "iam", null)
             }
           }
         }
