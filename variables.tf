@@ -159,7 +159,7 @@ variable "efs_volumes" {
       root_directory          = string
       transit_encryption      = string
       transit_encryption_port = number
-      authorization_config    = map(string)
+      authorization_config    = list(object({}))
     }))
   }))
   default = []
