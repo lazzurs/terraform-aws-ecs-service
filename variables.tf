@@ -153,13 +153,16 @@ variable "docker_volumes" {
 variable "efs_volumes" {
   description = "Task volume definitions as a list of configuration objects"
   type = list(object({
-    name      = string
+    name = string
     efs_volume_configuration = list(object({
       file_system_id          = string
       root_directory          = string
       transit_encryption      = string
       transit_encryption_port = number
-      authorization_config    = list(object({}))
+      authorization_config = list(object({
+        access_point_id = string
+        iam             = string
+      }))
     }))
   }))
   default = []
