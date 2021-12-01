@@ -56,7 +56,19 @@ variable "service_cpu" {
 }
 
 variable "service_memory" {
-  description = "Memory to Allocate"
+  description = "Memory to Allocate to container"
+  type        = number
+  default     = 1024
+}
+
+variable "task_cpu" {
+  description = "CPU Units to task Allocation"
+  type        = number
+  default     = 128
+}
+
+variable "task_memory" {
+  description = "Memory to Allocate for the  ECS task."
   type        = number
   default     = 1024
 }
