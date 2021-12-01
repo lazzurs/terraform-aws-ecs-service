@@ -49,14 +49,35 @@ variable "image_name" {
   type        = string
 }
 
-variable "service_cpu" {
-  description = "CPU Units to Allocation"
+variable "task_cpu" {
+  description = "CPU Units to Allocation for service"
   type        = number
   default     = 128
 }
 
-variable "service_memory" {
-  description = "Memory to Allocate"
+variable "task_memory" {
+  description = "Memory to Allocate for service"
+  type        = number
+  default     = 1024
+}
+
+variable "container_cpu" {
+  description = "CPU Units to Allocate for the ECS task container."
+  type        = number
+  default     = 128
+}
+
+variable "container_memory" {
+  description = "Memory to Allocate (hard limit) for the ECS task container."
+  type        = number
+  default     = null
+}
+
+variable "container_memory_reservation" {
+  description = <<-EOT
+    Memory to Allocate (soft limit) for the ECS task container.
+    https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html#ContainerDefinition-memoryReservation
+  EOT
   type        = number
   default     = 1024
 }
