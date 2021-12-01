@@ -130,22 +130,23 @@ resource "aws_ecs_task_definition" "this" {
   cpu                = var.task_cpu
   container_definitions = jsonencode([
     {
-      name             = var.service_name
-      image            = var.image_name
-      cpu              = var.service_cpu
-      memory           = var.service_memory
-      essential        = var.essential
-      privileged       = var.privileged
-      command          = var.command
-      mountPoints      = var.mount_points
-      environment      = var.environment
-      linuxParameters  = var.linux_parameters
-      logConfiguration = var.log_configuration
-      portMappings     = var.port_mappings
-      dnsSearchDomains = var.dns_search_domains
-      secrets          = var.secrets
-      systemControls   = var.systemControls
-      ulimits          = var.ulimits
+      name              = var.service_name
+      image             = var.image_name
+      cpu               = var.container_cpu
+      memory            = var.container_memory
+      memoryReservation = var.container_memory_reservation
+      essential         = var.essential
+      privileged        = var.privileged
+      command           = var.command
+      mountPoints       = var.mount_points
+      environment       = var.environment
+      linuxParameters   = var.linux_parameters
+      logConfiguration  = var.log_configuration
+      portMappings      = var.port_mappings
+      dnsSearchDomains  = var.dns_search_domains
+      secrets           = var.secrets
+      systemControls    = var.systemControls
+      ulimits           = var.ulimits
     }
   ])
   dynamic "volume" {
