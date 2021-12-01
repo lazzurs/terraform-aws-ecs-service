@@ -102,40 +102,80 @@ module "task_without_alb" {
 }
 ```
 
-## Variables
-| Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| ecs_cluster_id | ID of the ECS cluster | string | | yes |
-| service_name | Name of the service being deployed | string | | yes |
-| image_name | Name of the image to be deployed | string | | yes |
-| port_mappings | Port mappings for the docker container | list(object) | [] | no |
-| target_groups | Target group mappings for the docker container | list(object) | [] | no |
-| mount_points | Mount points for the container | list | [] | no |
-| environment | Environmental variables to pass to the container | list | [] | no | 
-| linux_parameters | Additional Linux Parameters | object | null | no |
-| service_desired_count | Desired number of instances to run | number | 1 | no |
-| service_cpu | CPU units to allocate | number | 128 | no |
-| service_memory | Memory to allocate | number | 1024 | no |
-| vpc_name | VPC that the service is deployed in | string |  "" | no |
-| tld | Top Level Domain to Use | string | "" | no |
-| health_check_path | Health check path for the ALB | string | "/" | no |
-| volumes | Task Volume definitions as a list of configuration objects | list(object) | [] | no|
-| tags | A map of tags to add to all resources | map(string) | {} | no |
-| create_listener | Create the alb listener (only needed once per port) | bool | false | no |
-| task_iam_policies | Additional task policies to be applied | list(object) | [] | no |
-| essential | Whether the task is essential | bool | true | no |
-| privileged | Whether the task is privileged | bool | false | no |
-| command | The command that is passed to the container | list(string) | [] | no |
-| network_mode | The Network Mode to run the container at | string | bridge | no | 
-| log_configuration | Log configuration options to send to a custom log driver for the container | object | null | no |
-| network_configuration | Network configuration for awsvpc networking type | object | [] | no |
-| deploy_with_tg | Deploy the service group attached to a target group | bool | false | no |
-| dns_search_domains | DNS search domains to use for DNS lookups | list(string) | no | [""] |
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Requirements
 
+| Name | Version   |
+|------|-----------|
+| terraform | \>= 1.0.0 |
+| aws | \>= 2.45  |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| aws | 3.68.0 |
+
+## Modules
+
+No modules.
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [aws_ecs_service.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_service) | resource |
+| [aws_ecs_service.main-no-lb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_service) | resource |
+| [aws_ecs_task_definition.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_task_definition) | resource |
+| [aws_iam_role.ecs_exec_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role.instance_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy.ecs_exec_role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
+| [aws_iam_role_policy.instance_role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
+| [aws_iam_policy_document.ecs_exec_assume_role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.ecs_exec_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.instance_assume_role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| command | The command that is passed to the container | `list(string)` | `[]` | no |
+| deploy\_with\_tg | Deploy the service group attached to a target group | `bool` | `false` | no |
+| dns\_search\_domains | List of DNS domains to search when a lookup happens | `list(string)` | `null` | no |
+| docker\_volumes | Task volume definitions as list of configuration objects | ```list(object({ host_path = string name = string docker_volume_configuration = list(object({ autoprovision = bool driver = string driver_opts = map(string) labels = map(string) scope = string })) }))``` | `[]` | no |
+| ecs\_cluster\_id | ID of the ECS cluster | `string` | n/a | yes |
+| efs\_volumes | Task volume definitions as a list of configuration objects | ```list(object({ name = string efs_volume_configuration = list(object({ file_system_id = string root_directory = string transit_encryption = string transit_encryption_port = number authorization_config = list(object({ access_point_id = string iam = string })) })) }))``` | `[]` | no |
+| environment | Environmental Variables to pass to the container | ```list(object({ name = string value = string }))``` | `null` | no |
+| essential | Whether the task is essential | `bool` | `true` | no |
+| exec\_iam\_policies | Additional IAM policies for the execution role | ```list(object({ effect = string actions = list(string) resources = list(string) }))``` | `[]` | no |
+| image\_name | Name of the image to be deployed | `string` | n/a | yes |
+| linux\_parameters | Additional Linux Parameters | ```object({ capabilities = object({ add = list(string) drop = list(string) }) })``` | `null` | no |
+| log\_configuration | Log configuration options to send to a custom log driver for the container. | ```object({ logDriver = string options = map(string) secretOptions = list(object({ name = string valueFrom = string })) })``` | `null` | no |
+| mount\_points | Mount points for the container | ```list(object({ containerPath = string sourceVolume = string readOnly = bool }))``` | `[]` | no |
+| network\_configuration | Network configuration to be used with awsvpc networking type | ```list(object({ subnets = list(string) security_groups = list(string) assign_public_ip = bool }))``` | `[]` | no |
+| network\_mode | The Network Mode to run the container at | `string` | `"bridge"` | no |
+| port\_mappings | Port mappings for the docker Container | ```list(object({ hostPort = number containerPort = number protocol = string }))``` | `[]` | no |
+| privileged | Whether the task is privileged | `bool` | `false` | no |
+| secrets | List of secrets to add | ```list(object({ name = string valueFrom = string }))``` | `[]` | no |
+| service\_cpu | CPU Units to Allocation for service | `number` | `128` | no |
+| service\_desired\_count | Desired Number of Instances to run | `number` | `1` | no |
+| service\_memory | Memory to Allocate for service | `number` | `1024` | no |
+| service\_name | Name of the service being deployed | `string` | n/a | yes |
+| systemControls | A list of namespaced kernel parameters to set in the container. | ```list(object({ namespace = string value = string }))``` | `[]` | no |
+| tags | A map of tags to add to all resources | `map(string)` | `{}` | no |
+| target\_groups | Target group port mappings for the docker container | ```list(object({ port = number target_group_arn = string }))``` | `[]` | no |
+| task\_cpu | CPU Units to Allocate for the ECS task. | `number` | `128` | no |
+| task\_iam\_policies | Additional IAM policies for the task | ```list(object({ effect = string actions = list(string) resources = list(string) }))``` | `[]` | no |
+| task\_iam\_role | ARN for a task IAM role | `string` | `""` | no |
+| task\_memory | Memory to Allocate for the ECS task. | `number` | `1024` | no |
+| tld | Top Level Domain to use | `string` | `""` | no |
+| ulimits | A list of ulimits settings for container. This is a list of maps, where each map should contain "name", "hardLimit" and "softLimit" | ```list(object({ name = string hardLimit = number softLimit = number }))``` | `null` | no |
 
 ## Outputs
 
-None.
+No outputs.
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Authors
 Module is forked from a module by [Mark Honomichl](https://github.com/austincloudguru).

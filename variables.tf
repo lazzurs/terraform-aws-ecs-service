@@ -50,13 +50,25 @@ variable "image_name" {
 }
 
 variable "service_cpu" {
-  description = "CPU Units to Allocation"
+  description = "CPU Units to Allocation for service"
   type        = number
   default     = 128
 }
 
 variable "service_memory" {
-  description = "Memory to Allocate"
+  description = "Memory to Allocate for service"
+  type        = number
+  default     = 1024
+}
+
+variable "task_cpu" {
+  description = "CPU Units to Allocate for the ECS task."
+  type        = number
+  default     = 128
+}
+
+variable "task_memory" {
+  description = "Memory to Allocate for the ECS task."
   type        = number
   default     = 1024
 }
