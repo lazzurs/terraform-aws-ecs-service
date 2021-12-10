@@ -126,12 +126,14 @@ resource "aws_ecs_task_definition" "this" {
   execution_role_arn = aws_iam_role.ecs_exec_role.arn
   network_mode       = var.network_mode
   task_role_arn      = var.task_iam_role
+  memory             = var.service_memory
+  cpu                = var.service_cpu
   container_definitions = jsonencode([
     {
       name             = var.service_name
       image            = var.image_name
-      cpu              = var.service_cpu
-      memory           = var.service_memory
+      cpu              = var.task_cpu
+      memory           = var.task_memory
       essential        = var.essential
       privileged       = var.privileged
       command          = var.command
