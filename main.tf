@@ -126,26 +126,27 @@ resource "aws_ecs_task_definition" "this" {
   execution_role_arn = aws_iam_role.ecs_exec_role.arn
   network_mode       = var.network_mode
   task_role_arn      = var.task_iam_role
-  memory             = var.service_memory
-  cpu                = var.service_cpu
+  memory             = var.task_memory
+  cpu                = var.task_cpu
   container_definitions = jsonencode([
     {
-      name             = var.service_name
-      image            = var.image_name
-      cpu              = var.task_cpu
-      memory           = var.task_memory
-      essential        = var.essential
-      privileged       = var.privileged
-      command          = var.command
-      mountPoints      = var.mount_points
-      environment      = var.environment
-      linuxParameters  = var.linux_parameters
-      logConfiguration = var.log_configuration
-      portMappings     = var.port_mappings
-      dnsSearchDomains = var.dns_search_domains
-      secrets          = var.secrets
-      systemControls   = var.systemControls
-      ulimits          = var.ulimits
+      name              = var.service_name
+      image             = var.image_name
+      cpu               = var.container_cpu
+      memory            = var.container_memory
+      memoryReservation = var.container_memory_reservation
+      essential         = var.essential
+      privileged        = var.privileged
+      command           = var.command
+      mountPoints       = var.mount_points
+      environment       = var.environment
+      linuxParameters   = var.linux_parameters
+      logConfiguration  = var.log_configuration
+      portMappings      = var.port_mappings
+      dnsSearchDomains  = var.dns_search_domains
+      secrets           = var.secrets
+      systemControls    = var.systemControls
+      ulimits           = var.ulimits
     }
   ])
   dynamic "volume" {

@@ -141,6 +141,9 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | command | The command that is passed to the container | `list(string)` | `[]` | no |
+| container\_cpu | CPU Units to Allocate for the ECS task container. | `number` | `128` | no |
+| container\_memory | Memory to Allocate (hard limit) for the ECS task container. | `number` | `null` | no |
+| container\_memory\_reservation | Memory to Allocate (soft limit) for the ECS task container. https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html#ContainerDefinition-memoryReservation | `number` | `1024` | no |
 | deploy\_with\_tg | Deploy the service group attached to a target group | `bool` | `false` | no |
 | dns\_search\_domains | List of DNS domains to search when a lookup happens | `list(string)` | `null` | no |
 | docker\_volumes | Task volume definitions as list of configuration objects | ```list(object({ host_path = string name = string docker_volume_configuration = list(object({ autoprovision = bool driver = string driver_opts = map(string) labels = map(string) scope = string })) }))``` | `[]` | no |
@@ -158,17 +161,15 @@ No modules.
 | port\_mappings | Port mappings for the docker Container | ```list(object({ hostPort = number containerPort = number protocol = string }))``` | `[]` | no |
 | privileged | Whether the task is privileged | `bool` | `false` | no |
 | secrets | List of secrets to add | ```list(object({ name = string valueFrom = string }))``` | `[]` | no |
-| service\_cpu | CPU Units to Allocation for service | `number` | `128` | no |
 | service\_desired\_count | Desired Number of Instances to run | `number` | `1` | no |
-| service\_memory | Memory to Allocate for service | `number` | `1024` | no |
 | service\_name | Name of the service being deployed | `string` | n/a | yes |
 | systemControls | A list of namespaced kernel parameters to set in the container. | ```list(object({ namespace = string value = string }))``` | `[]` | no |
 | tags | A map of tags to add to all resources | `map(string)` | `{}` | no |
 | target\_groups | Target group port mappings for the docker container | ```list(object({ port = number target_group_arn = string }))``` | `[]` | no |
-| task\_cpu | CPU Units to Allocate for the ECS task. | `number` | `128` | no |
+| task\_cpu | CPU Units to Allocation for service | `number` | `128` | no |
 | task\_iam\_policies | Additional IAM policies for the task | ```list(object({ effect = string actions = list(string) resources = list(string) }))``` | `[]` | no |
 | task\_iam\_role | ARN for a task IAM role | `string` | `""` | no |
-| task\_memory | Memory to Allocate for the ECS task. | `number` | `1024` | no |
+| task\_memory | Memory to Allocate for service | `number` | `1024` | no |
 | tld | Top Level Domain to use | `string` | `""` | no |
 | ulimits | A list of ulimits settings for container. This is a list of maps, where each map should contain "name", "hardLimit" and "softLimit" | ```list(object({ name = string hardLimit = number softLimit = number }))``` | `null` | no |
 
