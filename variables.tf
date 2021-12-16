@@ -57,7 +57,7 @@ variable "task_cpu" {
 
 variable "task_memory" {
   description = "Memory to Allocate for service"
-  type        = string 
+  type        = number 
   default     = 1024
 }
 
@@ -69,8 +69,8 @@ variable "container_cpu" {
 
 variable "container_memory" {
   description = "Memory to Allocate (hard limit) for the ECS task container."
-  type        = string
-  default     = null
+  type        = number
+  default     = 0
 }
 
 variable "container_memory_reservation" {
@@ -78,7 +78,7 @@ variable "container_memory_reservation" {
     Memory to Allocate (soft limit) for the ECS task container.
     https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html#ContainerDefinition-memoryReservation
   EOT
-  type        = string
+  type        = number
   default     = 1024
 }
 
