@@ -51,7 +51,7 @@ variable "image_name" {
 
 variable "task_cpu" {
   description = "CPU Units to Allocation for service"
-  type        = string
+  type        = number
   default     = 128
 }
 
@@ -63,7 +63,7 @@ variable "task_memory" {
 
 variable "container_cpu" {
   description = "CPU Units to Allocate for the ECS task container."
-  type        = string
+  type        = number
   default     = 128
 }
 
