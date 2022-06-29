@@ -105,16 +105,16 @@ module "task_without_alb" {
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
-| Name | Version   |
-|------|-----------|
-| terraform | \>= 1.0.0 |
-| aws | \>= 2.45  |
+| Name | Version |
+|------|---------|
+| terraform | >= 1.0.0 |
+| aws | >= 2.45 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| aws | 3.68.0 |
+| aws | 4.20.1 |
 
 ## Modules
 
@@ -142,7 +142,7 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | command | The command that is passed to the container | `list(string)` | `[]` | no |
 | container\_cpu | CPU Units to Allocate for the ECS task container. | `number` | `128` | no |
-| container\_memory | Memory to Allocate (hard limit) for the ECS task container. | `number` | `null` | no |
+| container\_memory | Memory to Allocate (hard limit) for the ECS task container. | `number` | `0` | no |
 | container\_memory\_reservation | Memory to Allocate (soft limit) for the ECS task container. https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html#ContainerDefinition-memoryReservation | `number` | `1024` | no |
 | deploy\_with\_tg | Deploy the service group attached to a target group | `bool` | `false` | no |
 | dns\_search\_domains | List of DNS domains to search when a lookup happens | `list(string)` | `null` | no |
@@ -150,6 +150,7 @@ No modules.
 | ecs\_cluster\_id | ID of the ECS cluster | `string` | n/a | yes |
 | efs\_volumes | Task volume definitions as a list of configuration objects | ```list(object({ name = string efs_volume_configuration = list(object({ file_system_id = string root_directory = string transit_encryption = string transit_encryption_port = number authorization_config = list(object({ access_point_id = string iam = string })) })) }))``` | `[]` | no |
 | environment | Environmental Variables to pass to the container | ```list(object({ name = string value = string }))``` | `null` | no |
+| ephemeral\_storage\_size\_in\_gib | (Optional) The amount of ephemeral storage to allocate for the task. This parameter is used to expand the total amount of ephemeral storage available, beyond the default amount, for tasks hosted on AWS Fargate. The total amount, in GiB, of ephemeral storage to set for the task. The minimum supported value is 21 GiB and the maximum supported value is 200 GiB. [See Ephemeral Storage.](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-storage.html) | `number` | `0` | no |
 | essential | Whether the task is essential | `bool` | `true` | no |
 | exec\_iam\_policies | Additional IAM policies for the execution role | ```list(object({ effect = string actions = list(string) resources = list(string) }))``` | `[]` | no |
 | image\_name | Name of the image to be deployed | `string` | n/a | yes |
@@ -160,6 +161,7 @@ No modules.
 | network\_mode | The Network Mode to run the container at | `string` | `"bridge"` | no |
 | port\_mappings | Port mappings for the docker Container | ```list(object({ hostPort = number containerPort = number protocol = string }))``` | `[]` | no |
 | privileged | Whether the task is privileged | `bool` | `false` | no |
+| requires\_compatibilities | (Optional) Set of launch types required by the task. The valid values are ```EC2``` and ```FARGATE``` | `list(string)` | ```[ "EC2" ]``` | no |
 | secrets | List of secrets to add | ```list(object({ name = string valueFrom = string }))``` | `[]` | no |
 | service\_desired\_count | Desired Number of Instances to run | `number` | `1` | no |
 | service\_name | Name of the service being deployed | `string` | n/a | yes |
