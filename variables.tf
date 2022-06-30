@@ -285,3 +285,13 @@ variable "requires_compatibilities" {
   default     = ["EC2"]
 
 }
+variable "launch_type" {
+  description = <<-EOT
+    (Optional) Launch type on which to run your service.
+    The valid values are ```EC2```, ```FARGATE```, and ```EXTERNAL```.
+    Defaults to ```EC2```.
+  EOT
+  type        = string
+  default     = "EC2"
+
+}

@@ -154,6 +154,7 @@ No modules.
 | essential | Whether the task is essential | `bool` | `true` | no |
 | exec\_iam\_policies | Additional IAM policies for the execution role | ```list(object({ effect = string actions = list(string) resources = list(string) }))``` | `[]` | no |
 | image\_name | Name of the image to be deployed | `string` | n/a | yes |
+| launch\_type | (Optional) Launch type on which to run your service. The valid values are ```EC2``` , ```FARGATE``` , and ```EXTERNAL``` . Defaults to ```EC2``` . | `string` | `"EC2"` | no |
 | linux\_parameters | Additional Linux Parameters | ```object({ capabilities = object({ add = list(string) drop = list(string) }) })``` | `null` | no |
 | log\_configuration | Log configuration options to send to a custom log driver for the container. | ```object({ logDriver = string options = map(string) secretOptions = list(object({ name = string valueFrom = string })) })``` | `null` | no |
 | mount\_points | Mount points for the container | ```list(object({ containerPath = string sourceVolume = string readOnly = bool }))``` | `[]` | no |
