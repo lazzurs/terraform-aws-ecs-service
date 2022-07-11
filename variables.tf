@@ -57,7 +57,7 @@ variable "task_cpu" {
 
 variable "task_memory" {
   description = "Memory to Allocate for service"
-  type        = number 
+  type        = number
   default     = 1024
 }
 
@@ -262,4 +262,36 @@ variable "task_iam_role" {
   description = "ARN for a task IAM role"
   type        = string
   default     = ""
+}
+
+variable "ephemeral_storage_size_in_gib" {
+  description = <<-EOT
+        (Optional) The amount of ephemeral storage to allocate for the task.
+        This parameter is used to expand the total amount of ephemeral storage available,
+        beyond the default amount, for tasks hosted on AWS Fargate.
+        The total amount, in GiB, of ephemeral storage to set for the task.
+        The minimum supported value is 21 GiB and the maximum supported value is 200 GiB.
+        [See Ephemeral Storage.](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-storage.html)
+  EOT
+  type        = number
+  default     = 0
+}
+
+variable "requires_compatibilities" {
+  description = <<-EOT
+  (Optional) Set of launch types required by the task. The valid values are ```EC2``` and ```FARGATE```
+  EOT
+  type        = list(string)
+  default     = ["EC2"]
+
+}
+variable "launch_type" {
+  description = <<-EOT
+    (Optional) Launch type on which to run your service.
+    The valid values are ```EC2```, ```FARGATE```, and ```EXTERNAL```.
+    Defaults to ```EC2```.
+  EOT
+  type        = string
+  default     = "EC2"
+
 }

@@ -122,12 +122,13 @@ data "aws_iam_policy_document" "instance_assume_role_policy" {
 # Launch Docker Service
 #------------------------------------------------------------------------------
 resource "aws_ecs_task_definition" "this" {
-  family             = var.service_name
-  execution_role_arn = aws_iam_role.ecs_exec_role.arn
-  network_mode       = var.network_mode
-  task_role_arn      = var.task_iam_role
-  memory             = var.task_memory
-  cpu                = var.task_cpu
+  family                   = var.service_name
+  requires_compatibilities = var.requires_compatibilities
+  execution_role_arn       = aws_iam_role.ecs_exec_role.arn
+  network_mode             = var.network_mode
+  task_role_arn            = var.task_iam_role
+  memory                   = var.task_memory
+  cpu                      = var.task_cpu
   container_definitions = jsonencode([
     {
       name              = var.service_name
@@ -149,6 +150,14 @@ resource "aws_ecs_task_definition" "this" {
       ulimits           = var.ulimits
     }
   ])
+
+  dynamic "ephemeral_storage" {
+    for_each = toset(var.ephemeral_storage_size_in_gib > 0 ? [var.ephemeral_storage_size_in_gib] : [])
+    content {
+      size_in_gib = ephemeral_storage.value
+    }
+  }
+
   dynamic "volume" {
     for_each = var.docker_volumes
     content {
@@ -209,6 +218,7 @@ resource "aws_ecs_service" "main" {
   cluster         = var.ecs_cluster_id
   desired_count   = var.service_desired_count
   iam_role        = ""
+  launch_type     = var.launch_type
   dynamic "network_configuration" {
     for_each = var.network_configuration
     content {
@@ -233,4 +243,6 @@ resource "aws_ecs_service" "main-no-lb" {
   task_definition = aws_ecs_task_definition.this.arn
   cluster         = var.ecs_cluster_id
   desired_count   = var.service_desired_count
+  iam_role        = var.task_iam_role
+  launch_type     = var.launch_type
 }
