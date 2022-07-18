@@ -245,4 +245,12 @@ resource "aws_ecs_service" "main-no-lb" {
   desired_count   = var.service_desired_count
   iam_role        = var.task_iam_role
   launch_type     = var.launch_type
+  dynamic "network_configuration" {
+    for_each = var.network_configuration
+    content {
+      subnets          = lookup(network_configuration.value, "subnets")
+      security_groups  = lookup(network_configuration.value, "security_groups")
+      assign_public_ip = lookup(network_configuration.value, "assign_public_ip")
+    }
+  }
 }
