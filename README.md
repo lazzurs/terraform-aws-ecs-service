@@ -165,6 +165,7 @@ No modules.
 | requires\_compatibilities | (Optional) Set of launch types required by the task. The valid values are ```EC2``` and ```FARGATE``` | `list(string)` | ```[ "EC2" ]``` | no |
 | secrets | List of secrets to add | ```list(object({ name = string valueFrom = string }))``` | `[]` | no |
 | service\_desired\_count | Desired Number of Instances to run | `number` | `1` | no |
+| service\_iam\_role | ARN for a Service IAM role note: You cannot specify an IAM role for services that require a service linked role. | `string` | `""` | no |
 | service\_name | Name of the service being deployed | `string` | n/a | yes |
 | systemControls | A list of namespaced kernel parameters to set in the container. | ```list(object({ namespace = string value = string }))``` | `[]` | no |
 | tags | A map of tags to add to all resources | `map(string)` | `{}` | no |
