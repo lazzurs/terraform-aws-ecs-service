@@ -243,7 +243,7 @@ resource "aws_ecs_service" "main-no-lb" {
   task_definition = aws_ecs_task_definition.this.arn
   cluster         = var.ecs_cluster_id
   desired_count   = var.service_desired_count
-  iam_role        = var.task_iam_role
+  iam_role        = var.service_iam_role
   launch_type     = var.launch_type
   dynamic "network_configuration" {
     for_each = var.network_configuration

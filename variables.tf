@@ -264,6 +264,15 @@ variable "task_iam_role" {
   default     = ""
 }
 
+variable "service_iam_role" {
+  description = <<-EOT
+        ARN for a Service IAM role
+        note: You cannot specify an IAM role for services that require a service linked role.
+  EOT
+  type        = string
+  default     = ""
+}
+
 variable "ephemeral_storage_size_in_gib" {
   description = <<-EOT
         (Optional) The amount of ephemeral storage to allocate for the task.
